@@ -1,18 +1,22 @@
+
 class Agent{
-  int x;
-  int y;
-  boolean red = false;
+  int x; // agent's x position
+  int y; // agent's y position
+  boolean red = false; // agent type
   
   Agent(int x, int y){
+    // assign position
     this.x = x;
     this.y = y;
     
+    // randomly assign agent type (red or blue)
     int r = round(random(1));
     if(r == 1){
       red = true;
     }
   }
   
+  // show agents as red or blue rectangles
   void show(){
     noStroke();
     if(red){
@@ -23,11 +27,13 @@ class Agent{
     rect(this.x, this.y, len, len);
   }
   
+  // check whether current grid cell is already occupied by another agent
   void singleGrid(Agent other){
     int cols = (width / len) - 1;
     int rows = (height / len) - 1;
     if(!other.equals(this)){
       while(other.x == this.x && other.y == this.y){
+      // move agent to another random cell if current cell is already occupied
       int newx = (round(random(1, cols - 2))) * len;
       int newy = (round(random(1, rows - 2))) * len;
       this.x = newx;
@@ -36,6 +42,7 @@ class Agent{
     }  
   }
   
+  // calculate share of neighbors that are of the agent's own as well as the other type
   float checkNeighbors(){
     float numRed = 0;
     float numBlue = 0;
@@ -61,6 +68,7 @@ class Agent{
     }
   }
   
+  // move agent to nearest available empty cell if tolerance level is surpassed
   void step(){
     if(checkNeighbors() > tolerance){
       float minDist = 10000000;
